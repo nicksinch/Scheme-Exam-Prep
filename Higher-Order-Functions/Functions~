@@ -1,0 +1,26 @@
+(define (my-identity x) x)
+
+(define (3+ x) (+ x 3))
+
+(define (inc x) (+ x 1))
+
+(define (fixed-point? f x) (= (f x) x)); Returns true if f(x) = x
+
+; Define a function that computes the following sequence: 1^2 + (k + 1)^2 + ... + 100^2 for k <= 100
+
+(define (k-sum k)
+  (if (> k 100) 0 (+ (* k k) (k-sum (+ k 1)))))
+
+; Define a function that computes the following sequence: x + e^x + e ^ ( e ^ x) + ... until addent <= 10 ^ 1000
+
+(define (e-sum x)
+  (if (> (expt 10 1000)) 0 (+ x (e-sum (expt x)))))
+
+; Define a function that computes (sum i = 0 to k) term(i), if k = 100 , this means term(0) + term (1) + term(2)...+term(100)
+
+(define (sum a b term next)
+  (if (> a b) 0 (+ (term a) (sum (next a) b term next))))
+
+(define (product a b term next)
+  (if (> a b) 1 (* (term a) (product (next a) b term next))))
+

@@ -1,0 +1,9 @@
+(define (sum-interval start end)
+  (define (helper counter sum)
+    (cond ((> start end)
+          0)
+    ((= counter end)
+    sum)
+    ((helper (+ counter 1) (+ sum counter)))))
+  (helper start end))
+    

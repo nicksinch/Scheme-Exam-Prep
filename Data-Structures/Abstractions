@@ -1,0 +1,16 @@
+
+(define make-rat cons)
+(define get-numer car)
+(define get-denom cdr)
+
+; But better : 
+(define (make-rat n d)
+  (if (= d 0) (cons n 1) (cons n d)))
+
+; Define a function for multiplication for rational numbers
+(define (*rat p q)
+  (make-rat (* (get-numer p) (get-numer q)) (* (get-denom p) (get-denom q))))
+
+(define (+rat p q) ; The sum of two rational numbers
+  (make-rat (+ (* (get-numer p) (get-denom q)) (* (get-numer q) (get-denom p)))
+            (* (get-denom p) (get-denom q))))

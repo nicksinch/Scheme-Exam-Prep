@@ -1,0 +1,8 @@
+(define (expt-iter base n)
+  (define (helper counter result)
+    (if (= counter 1)
+        result
+        (helper (- counter 1) (* result base))))
+  (if (< n 1)
+      1
+      (helper n base)))

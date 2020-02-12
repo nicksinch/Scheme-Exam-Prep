@@ -1,0 +1,12 @@
+; Linear iterative
+
+(define (reverse-digits n)
+  (define (helper number reversed)
+    (if (= number 0)
+        reversed
+        (helper (quotient number 10)
+                (+ (* reversed 10) (remainder number 10)))))
+  (helper n 0))
+  
+        
+    

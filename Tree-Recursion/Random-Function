@@ -1,0 +1,15 @@
+(define (rec-equat n)
+  (if (< n 3)
+      n
+      (+ (rec-equat (- n 1)) (* (rec-equat (- n 2)) 2) (* (rec-equat (- n 3)) 3))))
+
+(define (f-iter n)
+  (define (iter a b c count)
+    (if (= count n)
+        c
+        (iter (+ a (* 2 b) (* 3 c))
+              a
+              b
+              (+ count 1))))
+
+  (iter 2 1 0 0))

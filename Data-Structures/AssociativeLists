@@ -1,0 +1,76 @@
+; Makes an associative list given f
+(define (make-alist f keys)
+  (map (lambda (x) (cons x (f x))) keys))
+
+; (make-alist square '(1 3 5)) ---> ((1 . 1) (3 . 9) (5 . 25))
+
+; Selectors
+(define (keys alist) (map car alist))
+(define (alues alist) (map cdr alist))
+
+; (assoc <key> <alist> ) returns the first key - value pair if key occurs in alist
+; assv ( the same but with eqv? )
+; assq ( the same but with eq? )
+
+; Deletes a key with its value ( if exists )
+
+(define (my-filter p? l)
+  (cond ((null? l)
+         l)
+        ((p? (car l))
+         (cons (car l) (my-filter p? (cdr l))))
+        (else (my-filter p? (cdr l)))))
+
+(define (del-alist key alist)
+  (my-filter (lambda (kv) (not (equal? (car kv) key))) alist))
+
+; Adds a value for a key ( deleting the old one , if exists)
+; But doesn't preserve the order of the keys ( since it adds it at the front/beginning )
+
+(define (add-alist key value alist)
+  (cons (cons key value) (del-alist key alist)))
+
+; If we want to preserve the order :
+(define (add-key-value key value alist)
+(let ((new-kv (cons key value)))
+(if (assq key alist)
+(map (lambda (kv) (if (eq? (car kv) key)
+new-kv kv)) alist)
+(cons new-kv alist))))
+
+
+(define (search p l)
+  (and (not (null? l))
+       (or (p (car l)) (search p (cdr l)))))
+
+; Graph abstractions
+
+(define vertices keys) ; Gets the vertices
+
+(define (children v g)
+  (cdr (assv v g)))
+
+(define (edge? u v g)
+  (memv v (children u g)))
+
+(define (map-children v f g)
+  (map f (children v g)))
+
+(define (search-child v f g)
+  (search f (children v g)))
+
+; Finds vertices that don't have children
+(define (childless g)
+  (filter (lambda (v) (null? (children v g))) (vertices g)))
+
+; Finds the parents of a vertex
+(define (parents v g)
+  (filter (lambda (u) (edge? u v g)) (vertices g)))
+
+; Checks if the graph is symmetric
+(define (symmetric? g)
+  (all? (lambda (u)
+          (all? (lambda (v) (edge? v u g))
+          (children u g)))
+  (vertices g)))
+

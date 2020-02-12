@@ -1,0 +1,13 @@
+; Recursive definition ; ( 1,1,2,3,5,,8,13,21...)
+(define (fibonacci n)
+  (if (or (< n 1) (= n 1))
+      n
+      (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
+
+; Iterative implementation ( here , numbers start from 0 ( 0,1,1,2,3,5,,8,13,21...))
+(define (fib-iter n)
+  (define (iter current next count)
+    (if (= count n)
+        next
+        (iter next (+ current next) (+ count 1))))
+  (iter 0 1 0)) ; 0 and 1 are the first two fib numbers

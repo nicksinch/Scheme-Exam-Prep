@@ -1,0 +1,13 @@
+; Recursive implementation
+(define (count-digits n)
+  (if (= n 0)
+      1
+      (+ 1 (count-digits (quotient n 10)))))
+
+; Linear iteration
+(define (count-digits-it n)
+  (define (helper counter result)
+    (if (= counter 0)
+        result
+        (helper (quotient counter 10) (+ result 1))))
+  (helper n 0))

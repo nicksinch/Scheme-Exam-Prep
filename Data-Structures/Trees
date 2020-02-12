@@ -1,0 +1,77 @@
+
+; Check if a strucure is a tree
+(define (tree? t)
+  (or (null? t)
+      (and (list t) (= (length t) 3))
+      (tree? (cadr t))
+      (tree? (caddr t))))
+
+; Constructors
+
+(define empty-tree '())
+(define (make-tree root left right ) (list root left right))
+
+; Selectors
+(define root-tree car) ; Gets the root of the tree
+
+(define left-tree cadr) ; Gets the left subtree
+
+(define right-tree caddr) ; gets the right tree
+
+(define empty-tree? null?)
+
+; Is x a leaf ?
+(define (leaf? x)
+  (and (empty-tree? (left-tree x))
+       (empty-tree? (right-tree x))))
+
+; Returns the subtree of a node containing value x
+(define (memv-tree x t)
+  (cond ((empty-tree? t) #f)
+        ((eqv? x (root-tree t)) t)
+        (else (or (memv-tree x (left-tree t))
+                  (memv-tree x (right-tree t))))))
+;
+(define (cons#f h t) (and t (cons h t)))
+
+; Finds a path from root of the tree to a node x
+(define (path-tree x t)
+  (cond ((empty-tree? t) #f)
+        ((eqv? x (root-tree t)) (list x))
+        (else (cons#f (root-tree t)
+                      (or (path-tree x (left-tree t))
+                          (path-tree x (right-tree t)))))))
+
+; In-order traversal (construction )
+(define (in-order t)
+  (if (empty-tree? t)
+      '()
+      (append (in-order (left-tree t))
+              (list (root-tree t))
+              (in-order (right-tree t)))))
+
+; Post - order traversal (construction )
+(define (post-order t)
+  (if (empty-tree? t)
+      '()
+      (append (post-order (left-tree t))
+              (post-order (right-tree t))
+              (list (root-tree t)))))
+
+; Pre - order traversal (construction )
+(define (pre-order t)
+  (if (empty-tree? t)
+      '()
+      (append (list (root-tree t))
+              (pre-order (left-tree t))
+              (pre-order (right-tree t))
+              )))
+
+
+
+
+
+
+
+
+

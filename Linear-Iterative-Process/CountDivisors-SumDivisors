@@ -1,0 +1,23 @@
+; Count divisors
+
+(define (count-divs n)
+  (define (helper counter result)
+    (if (= counter 0)
+        result
+        (helper (- counter 1)
+                (if (= (remainder n counter) 0)
+                    (+ result 1)
+                    result))))
+  (helper n 0))
+
+; Sum divisors
+
+(define (sum-divs n)
+  (define (helper counter result)
+    (if (= counter 0)
+        result
+        (helper (- counter 1)
+                (if (= (remainder n counter) 0)
+                    (+ result counter)
+                    result))))
+  (helper n 0))

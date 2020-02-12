@@ -1,0 +1,6 @@
+(define (sum-digits n)
+  (define (helper number sum)
+    (if (= number 0)
+        sum
+        (helper (quotient number 10) (+ sum (remainder number 10)))))
+  (helper n 0))

@@ -1,0 +1,180 @@
+; Checks if something is a list
+(define (islist? l) (or (null? l) (and (pair? l) (list? l))))
+
+; Finds the length of a list
+(define (my-length l)
+  (if (null? l)
+      0
+      (+ 1 (my-length (cdr l)))))
+
+; Finds the sum of elements
+(define (sum-elements l)
+  (if (null? l)
+      0
+      (+ (car l) (sum-elements (cdr l)))))
+
+; Returns true if x is a member of l
+(define (my-member l x)
+  (and (not (null? l))
+       (or (= x (car l)) (my-member (cdr l) x))))
+
+; Returns the last element of the list
+(define (my-last l)
+  (if (null? (cdr l))
+      (car l)
+      (my-last (cdr l))))
+
+; Returns the n-th element of a list, start from position 0
+(define (my-nth l n)
+  (if (= n 0)
+      (car l)
+      (my-nth (cdr l) (- n 1))))
+
+; Returns a list with every element multiplied by a number x
+(define (scale l x)
+  (if (null? l)
+      '()
+      (cons (* (car l) x) (scale (cdr l) x))))
+
+; Returns the list in its reversed order
+(define (my-reverse l)
+  (if (null? l)
+      '()
+      (append (my-reverse (cdr l)) (list (car l)))))
+
+; Adds an element at the end of the list
+
+(define (push-back l el)
+  (if (null? (cdr l))
+      (append (list (car l)) (list el))
+      (append (list (car l)) (push-back (cdr l) el))))
+
+(define (lcons x y) (lambda (p) (p x y)))
+
+; Define map
+
+(define (my-map l f)
+  (if (null? l)
+      '()
+      (cons (f (car l)) (my-map (cdr l) f))))
+
+; Filter elements if they satisfy a concrete predicate p?
+(define (my-filter p? l)
+  (cond ((null? l)
+         l)
+        ((p? (car l))
+         (cons (car l) (my-filter p? (cdr l))))
+        (else (my-filter p? (cdr l)))))
+
+; Define foldr function which computers a1 ( op ( a2 ( op ( a3 ( op...( an op F))))))
+(define (my-foldr op nv l)
+  (if (null? l)
+      nv
+      (op (car l) (my-foldr op nv (cdr l)))))
+
+; Define foldl
+
+(define (my-foldl op nv l)
+  (if (null? l)
+      nv
+      (my-foldl op (op nv (car l)) (cdr l))))
+
+; Finds the maximum element in a list
+
+(define (max-el l)
+  (my-foldr max (car l) l))
+
+; Count the atoms in a list of lists
+
+(define (atom? x)
+  (and (not (null? x)) (not (pair? x))))
+
+(define (count-atoms l)
+  (cond ((null? l) 0)
+        ((atom? l) 1)
+        (else (+ (count-atoms (cdr l)) (count-atoms (car l))))))
+
+; Define flatten
+(define (my-flatten l)
+  (cond ((null? l) '())
+        ((atom? l) (list l))
+        (else (append (my-flatten (car l)) (my-flatten (cdr l))))))
+
+; Reverse the order of atoms in a list
+(define (deep-reverse l)
+  (cond ((null? l) '())
+        ((atom? l) l)
+        (else (append (deep-reverse (cdr l)) (list (deep-reverse (car l)))))))
+
+; Erases all occurences of el in l
+(define (my-remove-all el l)
+  (cond ((null? l)
+         '())
+        ((= (car l) el)
+         (my-remove-all el (cdr l)))
+        (else (append (list (car l)) (my-remove-all el (cdr l))))))
+
+; Erases just the first occurence of el in l
+(define (my-remove el l)
+  (cond ((null? l)
+         '())
+        ((= (car l) el)
+         (cdr l))
+        (else (append (list (car l)) (my-remove el (cdr l))))))
+
+; Insert element in position n in the list
+(define (my-insert pos el l)
+  (cond ((null? l)
+         '())
+        ((= pos 0)
+         (append (list el) l))
+        (else (append (list (car l)) (my-insert (- pos 1) el (cdr l))))))
+
+; Returns list of elements in position > pos from the list
+(define (my-list-tail pos l)
+  (cond ((null? l)
+         '())
+        ((= pos 0)
+         (cdr l))
+        (else (my-list-tail (- pos 1) (cdr l)))))
+
+; Returns a list of the digits of a number
+(define (explode-digits n)
+  (if (= n 0)
+      '()
+      (append ( explode-digits (quotient n 10)) (list(remainder n 10)))))
+
+; Return the element in position pos in the list
+
+(define (my-list-ref pos l)
+  (cond ((null? l)
+         '())
+        ((= pos 0)
+         (car l))
+        (else (my-list-ref (- pos 1) (cdr l)))))
+
+; Finds how much times the digit d occurs in the number n
+(define (digit-occurence d n)
+  (define digitsList (explode-digits n))
+  (define (helperF l)
+    (cond ((null? l)
+     0)
+    ((= d (car l))
+     (+ 1 (helperF (cdr l))))
+    (else (helperF (cdr l)))))
+  (helperF digitsList))
+
+; Returns the first n elements of a list
+(define (my-take n l)
+  (if (= n 0)
+      '()
+      (append (list (car l)) (my-take (- n 1) (cdr l)))))
+
+; Returns the list without the first n elements
+
+(define (my-drop n l)
+  (cond ((null? l)
+         '())
+         ((= n 1)
+          (cdr l))
+         (else (my-drop (- n 1) (cdr l)))))
